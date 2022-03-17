@@ -16,3 +16,8 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 ## Dependency Management
 
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+
+
+## Command to run DS server with newline character
+note: CD into the /precompiled directory before running this.
+./ds-server -c ds-sample-config01.xml -v brief -n
