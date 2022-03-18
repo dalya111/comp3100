@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class Client {
-    private Socket socket;
+    private static Socket socket;
     private DataInputStream dis;
     private DataOutputStream dos;
 
@@ -43,6 +43,22 @@ public class Client {
             String response2 = c.dis.readLine();
 
             System.out.println("response from the server: " + response2);
+
+            c.dos.write("REDY\n".getBytes());
+            c.dos.flush();
+
+            String response3 = c.dis.readLine();
+
+            System.out.println("response from the server: " + response3);
+
+            c.dos.write("QUIT\n".getBytes());
+            c.dos.flush();
+
+            String response4 = c.dis.readLine();
+
+            System.out.println("response from the server: " + response4);
+
+            socket.close();
 
         } catch (IOException e) {
             System.out.println(e);
