@@ -2,6 +2,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Client {
     private static Socket socket;
@@ -33,46 +35,91 @@ public class Client {
             c.dos.write("HELO\n".getBytes());
             c.dos.flush();
 
-            String response1 = c.dis.readLine();
+            String response = c.dis.readLine();
 
-            System.out.println("response from the server: " + response1);
+            System.out.println("response from the server:7 " + response);
 
             c.dos.write("AUTH dummy_user\n".getBytes());
             c.dos.flush();
 
-            String response2 = c.dis.readLine();
+            response = c.dis.readLine();
 
-            System.out.println("response from the server: " + response2);
+            System.out.println("response from the server:6 " + response);
+            
+            
+            while(!(response.equals("."))){
 
-            c.dos.write("REDY\n".getBytes());
-            c.dos.flush();
+                c.dos.write("REDY\n".getBytes());
+                c.dos.flush();      
 
-            String response3 = c.dis.readLine();
+                response = c.dis.readLine();
 
-            System.out.println("response from the server: " + response3);
+                System.out.println("response from the server:1 " + response);
+            
+                if(response.contains("JOBN")){
+
+                    String[] splitJob = response.split("\\s+");
+                    Integer numOfJObs = Integer.valueOf(splitJob[1]);
+                    System.out.println("number of jobs: " + numOfJObs);
+                    
+
+                    c.dos.write("GETS Capable 3 700 3800\n".getBytes());
+                    c.dos.flush();
+
+                    response = c.dis.readLine();
+
+                    System.out.println("response from the server:2 " + response);
+
+                    String[] splitData = response.split("\\s+");
+                    Integer numOfServers = Integer.valueOf(splitData[1]);
+                    System.out.println("number of servers: " + numOfServers);
+                    String[] servers = new String[numOfServers];
+
+                    c.dos.write("OK\n".getBytes());
+                    c.dos.flush();
+
+                    String schdeuleCommand ="";
+                    Integer max = 0;
+                    for(int i = 0; i < numOfServers; i++){
+  
+                        response = c.dis.readLine();
+                        System.out.println("response from the server:3 " + response);
+                        servers[i] = response;
+                        String[] server = servers[i].split("\\s+");
+                        if (Integer.valueOf(server[4])> max){
+                            schdeuleCommand = "SCHD " +server[1] + " " + server[0] + " " +server[8] + "\n";
+                            max = Integer.valueOf(server[4]);
+                        }
+
+                    }
+                
+                    c.dos.write("OK\n".getBytes());
+                    c.dos.flush();
+                    
+                    c.dos.write(schdeuleCommand.getBytes());
+                    c.dos.flush();
+
+                    response = c.dis.readLine();
+
+                    System.out.println("response from the server:6 " + response);
+
+                }
+                
+            }
+
 
             c.dos.write("QUIT\n".getBytes());
             c.dos.flush();
 
-            String response4 = c.dis.readLine();
+            response = c.dis.readLine();
 
-            System.out.println("response from the server: " + response4);
+            System.out.println("response from the server:6 " + response);
 
             socket.close();
 
         } catch (IOException e) {
             System.out.println(e);
         } 
-
-
-
-        // send HELO to the server
-        // check response from server
-        // if server responds with OK
-        // send AUTH fake_user
-        // check response from server 
-        // if server responds with OK
-        // close the connection
 
 
     }
