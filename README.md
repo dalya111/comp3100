@@ -21,3 +21,8 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 ## Command to run DS server with newline character
 note: CD into the /precompiled directory before running this.
 ./ds-server -c ds-sample-config01.xml -v brief -n
+
+for demo:
+./demoS1.sh -n Client.class
+
+cat diff ./S1DemoConfigs/stage1.diff
